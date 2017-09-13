@@ -1,0 +1,47 @@
+{% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+{% if checklist_set %}
+    <form action="/srac/checklists/{{ location_hash }}" method="post">
+        {% csrf_token %}
+        <ul>
+        {% for checklist in checklist_set %}
+            <li>
+                <div class="form-row">
+                    <p>{{ checklist.location_checklist.checklist.checklist_desc }}</p>
+                </div>
+                <div class="form-row">
+                    <input type="radio"
+                           id="confirmation_yes_{{ checklist.session_checklist_id }}"
+                           name="confirmation_{{ checklist.session_checklist_id }}"
+                           value="Y" {% if checklist.confirmation == "Y" %}checked{% endif %}>
+                    <label for="confirmation_yes_{{ checklist.session_checklist_id }}">Yes</label>
+                    <input type="radio"
+                           id="confirmation_no_{{ checklist.session_checklist_id }}"
+                           name="confirmation_{{ checklist.session_checklist_id }}"
+                           value="N" {% if checklist.confirmation == "N" %}checked{% endif %}>
+                    <label for="confirmation_no_{{ checklist.session_checklist_id }}">No</label>
+                    <input type="radio"
+                           id="confirmation_na_{{ checklist.session_checklist_id }}"
+                           name="confirmation_{{ checklist.session_checklist_id }}"
+                           value="NA" {% if checklist.confirmation == "NA" %}checked{% endif %}>
+                    <label for="confirmation_na_{{ checklist.session_checklist_id }}">Not Applicable</label>
+                </div>
+                <div class="form-row">
+                    <textarea id="checklist_remarks_{{ checklist.session_checklist_id }}">
+                        {{ checklist.remarks }}
+                    </textarea>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+        <div class="submit-row">
+            <label>&nbsp;</label><input type="submit" value="Submit" />
+          </div>
+    </form>
+{% else %}
+    <p>No checklists are available.</p>
+{% endif %}
+{% endblock %}
