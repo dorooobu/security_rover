@@ -15,7 +15,19 @@ def checklist(request, location_hash):
     current_user = get_object_or_404(User, pk=request.user.id)
 
     if request.method == 'POST':
-        pass
+        session = Session.objects.get(pk=request.POST['session_id'])
+        session_checklist_set = Session_Checklist.objects.filter(session=session)
+
+        # save changes
+        for session_checklist in session_checklist_set:
+            session_checklist.confirmation = request.POST['confirmation_' + str(session_checklist.session_checklist_id)]
+            session_checklist.remarks = request.POST['remarks_' + str(session_checklist.session_checklist_id)]
+            session_checklist.save()
+
+        session.is_session_submitted = 1
+        session.save()
+
+        return HttpResponse("Congrats!")
     else:
         context = {
             'location_hash': location_hash
@@ -30,6 +42,7 @@ def checklist(request, location_hash):
                 checker=current_user
             )
             session.save()
+            context['session_id'] = session.session_id
 
             location_checklists_set = Location_Checklist.objects.filter(location=location_hash)
             for checklist in location_checklists_set:
@@ -48,6 +61,7 @@ def checklist(request, location_hash):
                 for session_checklist in session_checklist_set:
                     if session_checklist.location_checklist.location.location_hash == location_hash:
                         print("There is an existing session for this location: {}".format(location_hash))
+                        context['session_id'] = existing_session.session_id
                         break
 
         context['checklist_set'] = session_checklist_set

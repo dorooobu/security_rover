@@ -5,5 +5,5 @@ from . import views
 app_name = 'srac'
 urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
-    url(r'^checklists/(?P<location_hash>[A-Za-z0-9_]+)/', views.checklist, name='checklists'),
+    url(r'^checklists/(?P<location_hash>[A-Za-z0-9_]+)', views.checklist, name='checklists'),
 ]
