@@ -2,40 +2,42 @@
 
 {% block content %}
 {% if checklist_set %}
-    <form action="/srac/checklists/{{ location_hash }}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="session_id" value="{{ session_id }}" />
-        {% for checklist in checklist_set %}
-            <div class="col border border-right-0 border-left-0">
-                <p>{{ checklist.location_checklist.checklist.checklist_desc }}</p>
-                <input type="radio"
-                       id="confirmation_yes_{{ checklist.session_checklist_id }}"
-                       name="confirmation_{{ checklist.session_checklist_id }}"
-                       value="Y" {% if checklist.confirmation == "Y" %}checked{% endif %}>
-                <label for="confirmation_yes_{{ checklist.session_checklist_id }}">Yes</label>
-                <input type="radio"
-                       id="confirmation_no_{{ checklist.session_checklist_id }}"
-                       name="confirmation_{{ checklist.session_checklist_id }}"
-                       value="N" {% if checklist.confirmation == "N" %}checked{% endif %}>
-                <label for="confirmation_no_{{ checklist.session_checklist_id }}">No</label>
-                <input type="radio"
-                       id="confirmation_na_{{ checklist.session_checklist_id }}"
-                       name="confirmation_{{ checklist.session_checklist_id }}"
-                       value="NA" {% if checklist.confirmation == "NA" %}checked{% endif %}>
-                <label for="confirmation_na_{{ checklist.session_checklist_id }}">Not Applicable</label>
-                <div class="col">
-                <textarea id="remarks_{{ checklist.session_checklist_id }}"
-                            class="remarks-area"
-                            name="remarks_{{ checklist.session_checklist_id }}">{{ checklist.remarks }}</textarea>
+    <div class="jumbotron">
+        <form action="/srac/checklists/{{ location_hash }}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="session_id" value="{{ session_id }}" />
+            {% for checklist in checklist_set %}
+                <div class="col border border-right-0 border-left-0">
+                    <p>{{ checklist.location_checklist.checklist.checklist_desc }}</p>
+                    <input type="radio"
+                           id="confirmation_yes_{{ checklist.session_checklist_id }}"
+                           name="confirmation_{{ checklist.session_checklist_id }}"
+                           value="Y" {% if checklist.confirmation == "Y" %}checked{% endif %}>
+                    <label for="confirmation_yes_{{ checklist.session_checklist_id }}">Yes</label>
+                    <input type="radio"
+                           id="confirmation_no_{{ checklist.session_checklist_id }}"
+                           name="confirmation_{{ checklist.session_checklist_id }}"
+                           value="N" {% if checklist.confirmation == "N" %}checked{% endif %}>
+                    <label for="confirmation_no_{{ checklist.session_checklist_id }}">No</label>
+                    <input type="radio"
+                           id="confirmation_na_{{ checklist.session_checklist_id }}"
+                           name="confirmation_{{ checklist.session_checklist_id }}"
+                           value="NA" {% if checklist.confirmation == "NA" %}checked{% endif %}>
+                    <label for="confirmation_na_{{ checklist.session_checklist_id }}">Not Applicable</label>
+                    <div class="col">
+                    <textarea id="remarks_{{ checklist.session_checklist_id }}"
+                                class="remarks-area"
+                                name="remarks_{{ checklist.session_checklist_id }}">{{ checklist.remarks }}</textarea>
+                    </div>
                 </div>
+                <br />
+            {% endfor %}
+            <div class="col">
+                <input class="btn btn-success" type="submit" value="Submit" />
             </div>
-            <br />
-        {% endfor %}
-        <div class="col">
-            <input class="btn btn-success" type="submit" value="Submit" />
-        </div>
-    </form>
+        </form>
 {% else %}
     <p>No checklists are available.</p>
 {% endif %}
+    </div>
 {% endblock %}

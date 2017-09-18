@@ -1,44 +1,40 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-    <title>SRAC | Security Rover Area Checklist</title>
+        <title>SRAC | Security Rover Area Checklist</title>
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <!-- Custom styles for this template -->
-    <link href="{% static 'srac/narrow-jumbotron.css' %}" rel="stylesheet">
-  </head>
+        <!-- Custom styles for this template -->
+        <link href="{% static 'srac/narrow-jumbotron.css' %}" rel="stylesheet">
+        {% block extrastyle %}{% endblock %}
+    </head>
 
-  <body>
+    <body>
+        <div class="container">
+        {% block container %}
+            <div class="header clearfix">
+                <h3 class="text-muted">Security Rover Area Checklist</h3>
+            </div>
+            <div class="col">
+                <p>Welcome {{ user.get_full_name }}!</p>
+            </div>
 
-    <div class="container">
-      <div class="header clearfix">
-        <nav>
-          <ul class="nav nav-pills float-right">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Home</a>
-            </li>
-          </ul>
-        </nav>
-        <h3 class="text-muted">Security Checklist</h3>
-      </div>
-
-      <div class="row marketing">
-        {% block content %}
+            <div class="row marketing">
+            {% block content %}
+            {% endblock %}
+            </div>
         {% endblock %}
-      </div>
-
-      <footer class="footer">
-        <p>&copy; Lexmark 2017</p>
-      </footer>
-
-    </div> <!-- /container -->
-  </body>
+        </div>
+        <footer class="footer">
+            <p>&copy; Lexmark 2017</p>
+        </footer>
+    </body>
 </html>

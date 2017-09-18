@@ -52,6 +52,7 @@ def checklist(request, location_hash):
                 )
 
             session_checklist_set = Session_Checklist.objects.filter(session=session)
+            context['checklist_set'] = session_checklist_set
         else:
             print("There are existing sessions")
             # check if there is an existing session in the location
@@ -62,7 +63,8 @@ def checklist(request, location_hash):
                     if session_checklist.location_checklist.location.location_hash == location_hash:
                         print("There is an existing session for this location: {}".format(location_hash))
                         context['session_id'] = existing_session.session_id
+                        context['checklist_set'] = session_checklist_set
                         break
 
-        context['checklist_set'] = session_checklist_set
+        context['user'] = current_user
         return render(request, 'srac/checklist.html', context)
