@@ -1,0 +1,44 @@
+{% extends "srac/base.html" %}
+
+{% block content %}
+{% if success %}
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">Well done!</h4>
+  <p>You have successfully performed the security check in this area.</p>
+</div>
+{% endif %}
+{% if checklist_set %}
+    <div class="list-group">
+        {% for checklist in checklist_set %}
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Checklist#{{ forloop.counter }}</h5>
+                    <small class="text-muted">
+                        {% if checklist.confirmation == 'Y' %}
+                        Yes
+                        {% elif checklist.confirmation == 'N' %}
+                        No
+                        {% else %}
+                        Not Applicable
+                        {% endif %}
+                    </small>
+                </div>
+                <p class="mb-1">{{ checklist.location_checklist.checklist.checklist_desc }}</p>
+                <small class="text-muted">
+                    Remarks:
+                    {% if checklist.remarks %}
+                    {{ checklist.remarks }}
+                    {% else %}
+                    None
+                    {% endif %}
+                </small>
+            </a>
+        {% endfor %}
+        <div class="jumbotron">
+            <p class="lead">{{ session.check_remarks }}</p>
+        </div>
+    </div>
+{% else %}
+    <p>No checklists are available.</p>
+{% endif %}
+{% endblock %}

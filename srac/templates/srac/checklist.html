@@ -2,13 +2,16 @@
 
 {% block content %}
 {% if checklist_set %}
-    <div class="jumbotron">
-        <form action="/srac/checklists/{{ location_hash }}" method="post">
+    <div class="list-group">
+        <form action="{% url 'srac:checklists' location_hash %}" method="post">
             {% csrf_token %}
-            <input type="hidden" name="session_id" value="{{ session_id }}" />
+            <input type="hidden" name="session_id" value="{{ session.session_id }}" />
             {% for checklist in checklist_set %}
-                <div class="col border border-right-0 border-left-0">
-                    <p>{{ checklist.location_checklist.checklist.checklist_desc }}</p>
+                <div class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Checklist#{{ forloop.counter }}</h5>
+                    </div>
+                    <p class="mb-1">{{ checklist.location_checklist.checklist.checklist_desc }}</p>
                     <input type="radio"
                            id="confirmation_yes_{{ checklist.session_checklist_id }}"
                            name="confirmation_{{ checklist.session_checklist_id }}"
@@ -32,7 +35,11 @@
                 </div>
                 <br />
             {% endfor %}
-            <div class="col">
+            <div class="jumbotron">
+                <p class="lead">Any comments about this area?</p>
+                <textarea id="session_remarks"
+                          class="remarks-area"
+                          name="session_remarks">{{ session.check_remarks }}</textarea>
                 <input class="btn btn-success" type="submit" value="Submit" />
             </div>
         </form>

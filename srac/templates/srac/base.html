@@ -23,9 +23,11 @@
             <div class="header clearfix">
                 <h3 class="text-muted">Security Rover Area Checklist</h3>
             </div>
+            {% if user.is_authenticated %}
             <div class="col">
                 <p>Welcome {{ user.get_full_name }}!</p>
             </div>
+            {% endif %}
 
             <div class="row marketing">
             {% block content %}
