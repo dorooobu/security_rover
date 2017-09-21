@@ -3,9 +3,8 @@
 {% block content %}
 {% if checklist_set %}
     <div class="list-group">
-        <form action="{% url 'srac:checklists' location_hash %}" method="post">
+        <form action="{% url 'srac:session.save' session.session_id %}" method="post">
             {% csrf_token %}
-            <input type="hidden" name="session_id" value="{{ session.session_id }}" />
             {% for checklist in checklist_set %}
                 <div class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">

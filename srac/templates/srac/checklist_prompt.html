@@ -1,0 +1,34 @@
+{% extends "srac/base.html" %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-3">Uh-Oh!</h1>
+    <p class="lead">
+        {% if prompt == "recent" %}
+        {{ session.checker.get_full_name }} has recently checked this location.
+        <br />
+        Would you like to check again?
+        <br />
+        Press 'Yes' to check again.
+        <br />
+        Press 'No' to view the results of the checklists.
+        {% elif prompt == 'exist' %}
+        {{ session.checker.get_full_name }} is currently checking this location.
+        <br />
+        Would you like to continue his work?
+        <br />
+        Press 'Yes' to continue his work.
+        <br />
+        Press 'No' to view his current work.
+        {% endif %}
+    </p>
+    <p>
+        {% if prompt == "recent" %}
+        <a class="btn btn-lg btn-primary" href="{% url 'srac:session.add' location.location_hash %}" role="button">Yes</a>
+        {% elif prompt == 'exist' %}
+        <a class="btn btn-lg btn-primary" href="{% url 'srac:session.edit' session.session_id %}" role="button">Yes</a>
+        {% endif %}
+        <a class="btn btn-lg btn-danger" href="{% url 'srac:session.view' session.session_id %}" role="button">No</a>
+    </p>
+</div>
+{% endblock %}
