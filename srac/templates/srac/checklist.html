@@ -5,8 +5,9 @@
     <div class="list-group">
         <form action="{% url 'srac:session.save' session.session_id %}" method="post">
             {% csrf_token %}
+            <ul class="list-group">
             {% for checklist in checklist_set %}
-                <div class="list-group-item list-group-item-action flex-column align-items-start">
+                <li class="list-group-item">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">Checklist#{{ forloop.counter }}</h5>
                     </div>
@@ -31,9 +32,10 @@
                                 class="remarks-area"
                                 name="remarks_{{ checklist.session_checklist_id }}">{{ checklist.remarks }}</textarea>
                     </div>
-                </div>
-                <br />
+                </li>
             {% endfor %}
+            </ul>
+            <br />
             <div class="jumbotron">
                 <p class="lead">Any comments about this area?</p>
                 <textarea id="session_remarks"

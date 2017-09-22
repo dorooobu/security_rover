@@ -10,7 +10,7 @@
 {% if checklist_set %}
     <div class="list-group">
         {% for checklist in checklist_set %}
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Checklist#{{ forloop.counter }}</h5>
                     <small class="text-muted">
@@ -32,7 +32,7 @@
                     None
                     {% endif %}
                 </small>
-            </a>
+            </div>
         {% endfor %}
         <div class="jumbotron">
             <p class="lead">{{ session.check_remarks }}</p>
