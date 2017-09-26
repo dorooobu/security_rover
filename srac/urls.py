@@ -5,6 +5,7 @@ from . import views
 
 app_name = 'srac'
 urlpatterns = [
+    url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^checklists/(?P<location_hash>[A-Za-z0-9_]+)', views.checklist, name='checklists'),

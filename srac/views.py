@@ -5,12 +5,16 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.shortcuts import reverse
 from django.utils import timezone
+from django.views import generic
 from datetime import timedelta
 
+from .models import Event
 from .models import Location
 from .models import Location_Checklist
 from .models import Session
 from .models import Session_Checklist
+
+import srac.messages
 
 
 @login_required(login_url='/srac/login/')
@@ -73,6 +77,13 @@ def session_add(request, location_hash):
     session.save()
     context['session'] = session
 
+    event = Event(
+        event=srac.messages.new_session.format(current_user.get_full_name(), str(location)),
+        event_date=timezone.now(),
+        emp_id=current_user.username
+    )
+    event.save()
+
     location_checklists_set = Location_Checklist.objects.filter(location=location)
     for location_checklist in location_checklists_set:
         session.session_checklist_set.create(
@@ -96,6 +107,13 @@ def session_edit(request, session_id):
     session = Session.objects.get(pk=session_id)
     context['session'] = session
 
+    event = Event(
+        event=srac.messages.edit_session.format(current_user.get_full_name(), str(get_session_location(session))),
+        event_date=timezone.now(),
+        emp_id=current_user.username
+    )
+    event.save()
+
     context['checklist_set'] = session.session_checklist_set.all()
 
     return render(request, 'srac/checklist.html', context)
@@ -116,6 +134,13 @@ def session_save(request, session_id):
         session.is_session_submitted = 1
         session.save()
 
+        event = Event(
+            event=srac.messages.save_session.format(session.checker.get_full_name(), get_session_location(session)),
+            event_date=timezone.now(),
+            emp_id=session.checker.username
+        )
+        event.save()
+
         return HttpResponseRedirect(
             reverse('srac:session.view', kwargs={'session_id': session.session_id}) + "?success=true"
         )
@@ -131,3 +156,16 @@ def session_view(request, session_id):
         context["success"] = "true"
 
     return render(request, 'srac/checklist_view.html', context)
+
+
+def get_session_location(session):
+    session_checklist_set = Session_Checklist.objects.filter(session=session)
+    return session_checklist_set[0].location_checklist.location
+
+
+class IndexView(generic.ListView):
+    template_name = 'srac/index.html'
+    context_object_name = 'event_set'
+
+    def get_queryset(self):
+        return Event.objects.order_by('-event_date')
