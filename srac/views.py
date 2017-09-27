@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -163,7 +164,8 @@ def get_session_location(session):
     return session_checklist_set[0].location_checklist.location
 
 
-class IndexView(generic.ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
+    login_url = '/srac/login/'
     template_name = 'srac/index.html'
     context_object_name = 'event_set'
 
