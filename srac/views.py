@@ -17,6 +17,8 @@ from .models import Session_Checklist
 
 import srac.messages
 
+import json
+import requests
 
 @login_required(login_url='/srac/login/')
 def checklist(request, location_hash):
@@ -142,9 +144,34 @@ def session_save(request, session_id):
         )
         event.save()
 
+        send_email_to_admins(event)
+
         return HttpResponseRedirect(
             reverse('srac:session.view', kwargs={'session_id': session.session_id}) + "?success=true"
         )
+
+
+def send_email_to_admins(event):
+    # retrieve emails of admins
+    admin_set = User.objects.filter(is_staff=True)
+    admin_email = []
+    for admin in admin_set:
+        admin_email.append(admin.email)
+
+    url = "http://pacebu03.lrdc.lexmark.com:8080/SecurityMail/MailService.svc/mail/send"
+    headers = {"Content-Type": "application/json"}
+    args = {
+        "AddressFrom": "noreply@lexmark.com",
+        "AddressFromName": "SRAC",
+        "AddressTo": admin_email,
+        "Subject": "[SRAC] {} {}".format(event.event_date, event.emp_id),
+        "Body": "{}".format(event.event)
+    }
+    response = requests.post(url, headers=headers, data=json.dumps(args))
+    if response.status_code == 200:
+        print("Successfully sent emails to admins (y)")
+    else:
+        print("Failed to send emails to admins :(")
 
 
 def session_view(request, session_id):
