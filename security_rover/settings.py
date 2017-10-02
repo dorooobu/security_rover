@@ -76,13 +76,24 @@ WSGI_APPLICATION = 'security_rover.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# for localhost
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'srac',
+#         'USER': 'root',
+#         'PASSWORD': 'admin',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'srac',
-        'USER': 'root',
-        'PASSWORD': 'admin',
-        'HOST': '127.0.0.1',
+        'USER': 'ToolsAdmin',
+        'PASSWORD': 'lexmark1',
+        'HOST': 'pacebu01',
         'PORT': '3306',
     }
 }
