@@ -71,6 +71,7 @@ def session_add(request, location_hash):
 
     context = {
         'user': current_user,
+        'location': location
     }
 
     session = Session(
@@ -108,10 +109,15 @@ def session_edit(request, session_id):
     }
 
     session = Session.objects.get(pk=session_id)
+    session.checker = current_user
+    session.save()
     context['session'] = session
 
+    location = get_session_location(session)
+    context['location'] = location
+
     event = Event(
-        event=srac.messages.edit_session.format(current_user.get_full_name(), str(get_session_location(session))),
+        event=srac.messages.edit_session.format(current_user.get_full_name(), str(location)),
         event_date=timezone.now(),
         emp_id=current_user.username
     )
@@ -178,7 +184,8 @@ def session_view(request, session_id):
     session = get_object_or_404(Session, pk=session_id)
     context = {
         "checklist_set": session.session_checklist_set.all(),
-        "session": session
+        "session": session,
+        "location": get_session_location(session)
     }
     if "success" in request.GET:
         context["success"] = "true"

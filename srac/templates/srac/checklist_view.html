@@ -1,6 +1,7 @@
 {% extends "srac/base.html" %}
 
 {% block content %}
+<hr class="my-4">
 {% if success %}
 <div class="alert alert-success" role="alert">
   <h4 class="alert-heading">Well done!</h4>
@@ -8,36 +9,37 @@
 </div>
 {% endif %}
 {% if checklist_set %}
-    <div class="list-group">
-        {% for checklist in checklist_set %}
-            <div class="list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Checklist#{{ forloop.counter }}</h5>
-                    <small class="text-muted">
-                        {% if checklist.confirmation == 'Y' %}
-                        Yes
-                        {% elif checklist.confirmation == 'N' %}
-                        No
-                        {% else %}
-                        Not Applicable
-                        {% endif %}
-                    </small>
-                </div>
-                <p class="mb-1">{{ checklist.location_checklist.checklist.checklist_desc }}</p>
+<div class="list-group">
+    {% for checklist in checklist_set %}
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Checklist#{{ forloop.counter }}</h5>
                 <small class="text-muted">
-                    Remarks:
-                    {% if checklist.remarks %}
-                    {{ checklist.remarks }}
+                    {% if checklist.confirmation == 'Y' %}
+                    Yes
+                    {% elif checklist.confirmation == 'N' %}
+                    No
                     {% else %}
-                    None
+                    Not Applicable
                     {% endif %}
                 </small>
             </div>
-        {% endfor %}
-        <div class="jumbotron">
-            <p class="lead">{{ session.check_remarks }}</p>
+            <p class="mb-1">{{ checklist.location_checklist.checklist.checklist_desc }}</p>
+            <small class="text-muted">
+                Remarks:
+                {% if checklist.remarks %}
+                {{ checklist.remarks }}
+                {% else %}
+                None
+                {% endif %}
+            </small>
         </div>
+    {% endfor %}
+    <div class="jumbotron starter-template">
+        <h6>General Remarks</h6>
+        <p class="lead">{{ session.check_remarks }}</p>
     </div>
+</div>
 {% else %}
     <p>No checklists are available.</p>
 {% endif %}

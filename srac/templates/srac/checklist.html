@@ -2,50 +2,50 @@
 
 {% block content %}
 {% if checklist_set %}
-    <div class="list-group">
-        <form action="{% url 'srac:session.save' session.session_id %}" method="post">
-            {% csrf_token %}
-            <ul class="list-group">
-            {% for checklist in checklist_set %}
-                <li class="list-group-item">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">Checklist#{{ forloop.counter }}</h5>
-                    </div>
-                    <p class="mb-1">{{ checklist.location_checklist.checklist.checklist_desc }}</p>
-                    <input type="radio"
-                           id="confirmation_yes_{{ checklist.session_checklist_id }}"
-                           name="confirmation_{{ checklist.session_checklist_id }}"
-                           value="Y" {% if checklist.confirmation == "Y" %}checked{% endif %}>
-                    <label for="confirmation_yes_{{ checklist.session_checklist_id }}">Yes</label>
-                    <input type="radio"
-                           id="confirmation_no_{{ checklist.session_checklist_id }}"
-                           name="confirmation_{{ checklist.session_checklist_id }}"
-                           value="N" {% if checklist.confirmation == "N" %}checked{% endif %}>
-                    <label for="confirmation_no_{{ checklist.session_checklist_id }}">No</label>
-                    <input type="radio"
-                           id="confirmation_na_{{ checklist.session_checklist_id }}"
-                           name="confirmation_{{ checklist.session_checklist_id }}"
-                           value="NA" {% if checklist.confirmation == "NA" %}checked{% endif %}>
-                    <label for="confirmation_na_{{ checklist.session_checklist_id }}">Not Applicable</label>
-                    <div class="col">
-                    <textarea id="remarks_{{ checklist.session_checklist_id }}"
-                                class="remarks-area"
-                                name="remarks_{{ checklist.session_checklist_id }}">{{ checklist.remarks }}</textarea>
-                    </div>
-                </li>
-            {% endfor %}
-            </ul>
-            <br />
-            <div class="jumbotron">
-                <p class="lead">Any comments about this area?</p>
-                <textarea id="session_remarks"
-                          class="remarks-area"
-                          name="session_remarks">{{ session.check_remarks }}</textarea>
-                <input class="btn btn-success" type="submit" value="Submit" />
-            </div>
-        </form>
+<hr class="my-4">
+<div class="list-group">
+    <form action="{% url 'srac:session.save' session.session_id %}" method="post">
+        {% csrf_token %}
+        <ul class="list-group">
+        {% for checklist in checklist_set %}
+            <li class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Checklist#{{ forloop.counter }}</h5>
+                </div>
+                <p class="mb-1">{{ checklist.location_checklist.checklist.checklist_desc }}</p>
+                <input type="radio"
+                       id="confirmation_yes_{{ checklist.session_checklist_id }}"
+                       name="confirmation_{{ checklist.session_checklist_id }}"
+                       value="Y" {% if checklist.confirmation == "Y" %}checked{% endif %}>
+                <label for="confirmation_yes_{{ checklist.session_checklist_id }}">Yes</label>
+                <input type="radio"
+                       id="confirmation_no_{{ checklist.session_checklist_id }}"
+                       name="confirmation_{{ checklist.session_checklist_id }}"
+                       value="N" {% if checklist.confirmation == "N" %}checked{% endif %}>
+                <label for="confirmation_no_{{ checklist.session_checklist_id }}">No</label>
+                <input type="radio"
+                       id="confirmation_na_{{ checklist.session_checklist_id }}"
+                       name="confirmation_{{ checklist.session_checklist_id }}"
+                       value="NA" {% if checklist.confirmation == "NA" %}checked{% endif %}>
+                <label for="confirmation_na_{{ checklist.session_checklist_id }}">Not Applicable</label>
+                <div class="col">
+                <textarea id="remarks_{{ checklist.session_checklist_id }}"
+                            class="remarks-area"
+                            name="remarks_{{ checklist.session_checklist_id }}">{{ checklist.remarks }}</textarea>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+        <div class="jumbotron starter-template">
+            <p class="lead">Any comments about the area?</p>
+            <textarea id="session_remarks"
+                      class="remarks-area"
+                      name="session_remarks">{{ session.check_remarks }}</textarea>
+            <input class="btn btn-success" type="submit" value="Submit" />
+        </div>
+    </form>
 {% else %}
     <p>No checklists are available.</p>
 {% endif %}
-    </div>
+</div>
 {% endblock %}
