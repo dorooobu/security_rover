@@ -13,7 +13,7 @@
     {% for checklist in checklist_set %}
         <div class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Checklist#{{ forloop.counter }}</h5>
+                <h5 class="mb-1">#{{ forloop.counter }} {{ checklist.location_checklist.checklist.checklist_name }}</h5>
                 <small class="text-muted">
                     {% if checklist.confirmation == 'Y' %}
                     Yes
